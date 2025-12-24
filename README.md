@@ -108,5 +108,5 @@ N.Arai
 ## 関連リンク
 
 - 論文: arXiv (準備中)
-- リポジトリ: [https://github.com/[username]/prime-oasis](https://github.com/%5Busername%5D/prime-oasis)
+- リポジトリ: [https://github.com/chotto2/prime-oasis](https://github.com/chotto2/prime-oasis)
 
