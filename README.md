@@ -58,7 +58,7 @@ LCM法では、複数の層を入れ子にする「マトリョーシカ構造�
 
 ```bash
 # リポジトリのクローン
-git clone https://github.com/[username]/prime-oasis.git
+git clone https://github.com/chotto2/prime-oasis.git
 cd prime-oasis
 
 # Dockerイメージのビルド
