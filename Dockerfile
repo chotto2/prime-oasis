@@ -15,5 +15,9 @@ RUN mkdir -p build && cd build && \
     cmake .. && \
     make
 
+# exe copy
+RUN cp build/oasis_layer1 /usr/local/bin/ && \
+    cp build/oasis_layer2 /usr/local/bin/
+
 CMD {"/bin/bash"}
 

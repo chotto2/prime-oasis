@@ -1,5 +1,5 @@
 /**
- * @file oasis_sample.c
+ * @file oasis_layer1.c
  * @brief Find prime numbers from the desert.
  * @author N.Arai
  * @date 2025-12-22
