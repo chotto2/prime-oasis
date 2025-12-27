@@ -1,3 +1,4 @@
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/chotto2/prime-oasis)
 
 # Prime Oasis - 砂漠の中のオアシスのような素数
 
