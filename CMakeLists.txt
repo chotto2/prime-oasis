@@ -5,6 +5,8 @@ set(CMAKE_C_STANDARD 11)
 
 add_executable(oasis_layer1 src/oasis_layer1.c)
 add_executable(oasis_layer2 src/oasis_layer2.c)
+add_executable(oasis_layer3 src/oasis_layer3.c)
 target_link_libraries(oasis_layer1 gmp m)
 target_link_libraries(oasis_layer2 gmp m)
+target_link_libraries(oasis_layer3 gmp m)
 

@@ -76,7 +76,6 @@ int main()
 	mpz_init(step);
 
 	make_lcm(start, 701);				// start = lcm(1,2,3,..,701), around 2^1024
-gmp_printf("lcm_701=%Zd\n", start);
 	mpz_mul_ui(end, start, 2);		        // end   = start*2;
 	make_lcm(step,  691);				// step  = lcm(1,2,3,..,691)
 						
