@@ -18,7 +18,9 @@ RUN mkdir -p build && cd build && \
 # exe copy
 RUN cp build/oasis_layer1 /usr/local/bin/ && \
     cp build/oasis_layer2 /usr/local/bin/ && \
-    cp build/oasis_layer3 /usr/local/bin/
+    cp build/oasis_layer3 /usr/local/bin/ && \
+    cp build/oasis_divs   /usr/local/bin/
+
 
 CMD {"/bin/bash"}
 
