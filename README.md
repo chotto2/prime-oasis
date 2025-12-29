@@ -58,7 +58,7 @@ start,end,stepとも全て素数砂漠の中心点で指定している。
 ここで注意して欲しいのは、startを原点0ではなくLCM(1,2,3,...701)にしていることである。  
 通常、整数ｎの倍数を途中位置ｍから探索する場合、除算して積算して位置調整する必要がある。  
 startをLCM(1,2,3,...701)にすると、1から701の全ての倍数が原点０から探索するのと等価となり位置調整が不要となる。  
-それに加えて出力結果のビット数を平準化することができる。
+それに加えて出力結果のビット数を平準化することができる。  
 endは`start*2`とした。原点０からLCM(1,2,3,...701)の探索と同じサイズ感となり分かりやすいと判断したからだ。  
 stepは層という概念を導入して下記のようにした。  
 
@@ -72,14 +72,15 @@ stepは層という概念を導入して下記のようにした。
 make_lcm(A, B)マクロは、LCM(1,2,3,...B)の値を計算しmpz_t型のAに代入する。
 
 find_prime_oasis()関数は、startからendまでの区間をstep刻みで素数砂漠のオアシス素数を探す。  
-start,end,stepとも全てmpz_t型の変数でLCM(1,2,3,...n)の値を指定する。
+start,end,stepはすべてmpz_t型の変数でLCM(1,2,3,...n)形式の値を指定する。
 
 ## プログラム構成
 
-現在のバージョンは第1層と第2層がフルスペックで実装され第3層版は限定的なスペックとなっている。
-oasis_layer1・・・第1層のフルスペック版
-oasis_layer2・・・第2層のフルスペック版
-oasis_layer3・・・第3層のマイナーチェンジ版（Codespaceで11分程度で終了するように調整済み）
+プログラムは下記の4本で構成している。
+- **oasis_layer1**: 第1層のフルスペック版
+- **oasis_layer2**: 第2層のフルスペック版
+- **oasis_layer3**: 第3層のマイナーチェンジ版（Codespaceで11分程度で終了するように調整済み）
+- **oasis_divs**: LCM(1,2,3,...n)形式の素因数分解の情報を2から順次表示
 
 ## 特徴
 
@@ -108,6 +109,7 @@ docker build -t prime-oasis .
 docker run -it prime-oasis /app/build/oasis_layer1
 docker run -it prime-oasis /app/build/oasis_layer2
 docker run -it prime-oasis /app/build/oasis_layer3
+docker run -it prime-oasis /app/build/oasis_divs
 ```
 
 ## パフォーマンス
@@ -129,7 +131,7 @@ user    0m0.087s
 sys     0m0.284s
 
 ```
-※Codespace:2-Core
+※Codespace:2-Core  
 ※出力のリダイレクトなし
 
 ## 出力例
