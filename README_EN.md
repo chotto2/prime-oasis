@@ -1,5 +1,7 @@
 # Prime Oasis - Primes Like an Oasis in the Desert
 
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/chotto2/prime-oasis)
+
 In intervals where prime numbers do not appear consecutively (hereafter referred to as "prime deserts"), there is approximately a 1% probability that a prime number (hereafter referred to as "oasis prime") may exist.
 
 ## Overview
