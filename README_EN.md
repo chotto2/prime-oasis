@@ -44,7 +44,7 @@ Similarly, from origin 0 to LCM(1,2,3,...683), there are 683 prime deserts cente
 And so on...
 
 Thus, examining a single prime desert reveals that the smaller prime deserts below it form a hierarchical structure similar to matryoshka dolls.  
-While a matryoshka doll contains just one slightly smaller doll inside, a prime desert contain multiple smaller prime deserts.  
+While a matryoshka doll contains just one slightly smaller doll inside, a prime desert contains multiple smaller prime deserts.  
 This means that from origin 0 to LCM(1,2,3,...701), there are `701*691=484,391` prime deserts centered at multiples of LCM(1,2,3,...683).  
 Similarly, from origin 0 to LCM(1,2,3,...701), there are `701*691*683=330,839,053` prime deserts centered at multiples of LCM(1,2,3,...677).  
 Where center points of large and small prime deserts coincide, they form an overlapping state, with the size determined by the larger desert.
