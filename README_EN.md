@@ -4,7 +4,7 @@ In intervals where prime numbers do not appear consecutively (hereafter referred
 
 ## Overview
 
-This is a somewhat highly original project: "Let's search for primes in the universally disliked prime deserts."
+This is a somewhat unconventional project: "Let's search for primes in the universally disliked prime deserts."
 99% of prime deserts do not contain oasis primes.
 So why are we fixated on prime deserts? Because prime deserts exist at regular intervals, making them suitable for systematic searching.
 It's like using a sniper rifle scope to precisely target and shoot primes.
