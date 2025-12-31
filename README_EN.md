@@ -26,17 +26,17 @@ Two points: LCM(1,2,3,...n)±1
 
 Here, we've prepared a prime desert with its center point at LCM(1,2,3,...701) and size 1403.
 The specific value of the center point is as follows:
-```
 
+```text
 2626719802592710061239991829174692172528343457131512513976281060940948726537757144360059535978552440933031373189919061646742591656110407680769241480651946904946211000952247368842571964792534944293239882868728171914661797572466549735970311937966946924655356399900939424721115438589874540587436119564591680000
-
 ```
+
 When this value is expressed in factorized product form, it appears as follows:
-```
 
+```text
 2^9*3^5*5^4*7^3*11^2*13^2*17^2*19^2*23^2*29^1*31^1*37^1*…677^1*683^1*691^1*701^1
-
 ```
+
 Please focus on the end of this product expression.
 This shows that from origin 0 to LCM(1,2,3,...701), there are 701 prime deserts centered at multiples of LCM(1,2,3,...691).  
 Similarly, from origin 0 to LCM(1,2,3,...691), there are 691 prime deserts centered at multiples of LCM(1,2,3,...683).  
@@ -78,6 +78,7 @@ All of start, end, and step are mpz_t type variables with values in LCM(1,2,3,..
 ## Program Components
 
 The program consists of the following four executables:
+
 - **oasis_layer1**: Full-spec version for Layer 1
 - **oasis_layer2**: Full-spec version for Layer 2
 - **oasis_layer3**: Minor-change version for Layer 3 (adjusted to complete in approximately 11 minutes on Codespace)
@@ -115,7 +116,7 @@ docker run -it prime-oasis /app/build/oasis_divs
 
 ## Performance
 
-```
+```text
 oasis_layer1:
 real    0m0.756s
 user    0m0.016s
@@ -137,7 +138,7 @@ sys     0m0.284s
 
 ## Output Example
 
-```
+```text
 prime oasis = (prime value)
 prime oasis = (prime value)
 ...
@@ -176,4 +177,3 @@ Paper in preparation. Proper citation format will be provided after publication.
 
 - Paper: arXiv (in preparation)
 - Repository: <https://github.com/chotto2/prime-oasis>
-
