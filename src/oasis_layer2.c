@@ -2,10 +2,17 @@
  * @file oasis_layer2.c
  * @brief Find prime numbers from the desert.
  * @author N.Arai
- * @date 2025-12-22
+ * @date 2026-01-01
  *
  * This program demonstrates finding prime numbers within prime deserts
  * using the innovative LCM method - a constructive (non-sieve) approach.
+ *
+ * @note v1.4.1 (2026-01-01): Prime desert boundary handling improvements
+ *       1. Fixed twin prime display order (was reversed)
+ *       2. Skip primality test for (start - 1) at first desert boundary
+ *       3. Skip primality test for (end + 1) at last desert boundary
+ *       4. Eliminate duplicate output when previous desert's (+1) matches current desert's (-1)
+ *       5. Corrected terminology: "prime oasis" → "oasis prime" in output
  *
  * @note Around 1024-bit version for educational purposes
  * @see Related paper on arXiv (to be published)
@@ -29,6 +36,11 @@
  * @param[in] end   Lower boundary of the prime gap (botom lcm)
  * @param[in] step  Search increment (smaller lcm)
  *
+ * @note Modified in v1.4.1 (2026-01-01):
+ *       - Fixed display order for twin primes (now shows in ascending order)
+ *       - Added boundary checks to skip tests at range limits
+ *       - Added duplicate detection for overlapping boundary tests
+ *
  * @note All mpz_t parameters must be initialized before calling
  * @details Search for primes in the form: pit +- 1, where pit = start + k*step
  */
@@ -42,18 +54,29 @@ void find_prime_oasis(mpz_t start, mpz_t end, mpz_t step)
 	mpz_init(p1);
 	mpz_init(m1);
 
+	mpz_set_ui(p1, 0);				// p1 = 0;
 	for (mpz_set(pit, start);			// for (pit =  start
-	     mpz_cmp(pit, end) < 0;			//      pit <  end
+	     mpz_cmp(pit, end) <= 0;			//      pit <= end
 	     mpz_add(pit, pit, step)) {			//      pit += step) {
 
-		mpz_add_ui(p1, pit, 1);			// pit+1 is
-		if (mpz_probab_prime_p(p1, 25)) {	//  prime?
-			gmp_printf("prime oasis = %Zd\n", p1);
-		}
-		mpz_sub_ui(m1, pit, 1);			// pit-1 is
-		if (mpz_probab_prime_p(m1, 25)) {	//  prime?
-			gmp_printf("prime oasis = %Zd\n", m1);
-		}
+	   if (mpz_cmp(pit, start) != 0) {		//    if (pit != start) {
+	      mpz_sub_ui(m1, pit, 1);			//       m1 = pit - 1;
+	      if (mpz_cmp(m1, p1) == 0) {		//       if (m1 == p1) {
+	         ;					//          nothing to do.
+	      }						//       }
+              else {					//       else  {
+	         if (mpz_probab_prime_p(m1, 25)) {	//          prime?
+		    gmp_printf("oasis prime = %Zd\n", m1);
+	         }
+	      }
+	   }
+
+	   if (mpz_cmp(pit, end) != 0) {		//    if (pit != end) {
+	      mpz_add_ui(p1, pit, 1);			//       p1 = pit + 1;
+	      if (mpz_probab_prime_p(p1, 25)) {		//          prime?
+		 gmp_printf("oasis prime = %Zd\n", p1);
+	      }
+           }
 	}
 
 	mpz_clear(pit);
