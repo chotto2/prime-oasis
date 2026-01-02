@@ -2,10 +2,15 @@
  * @file oasis_layer1.c
  * @brief Find prime numbers from the desert.
  * @author N.Arai
- * @date 2026-01-01
+ * @date 2026-01-02
  *
  * This program demonstrates finding prime numbers within prime deserts
  * using the innovative LCM method - a constructive (non-sieve) approach.
+ *
+ * @note v1.4.2 (2026-01-02): Enhanced twin prime display
+ *       - Added twin prime counter and statistics display
+ *       - Display "oasis primes" marker for the second prime in twin pairs
+ *       (Note: Keyboard interrupt feature not included - layer1 completes instantly)
  *
  * @note v1.4.1 (2026-01-01): Prime desert boundary handling improvements
  *       1. Fixed twin prime display order (was reversed)
@@ -36,6 +41,10 @@
  * @param[in] end   Lower boundary of the prime gap (botom lcm)
  * @param[in] step  Search increment (smaller lcm)
  *
+ * @note Modified in v1.4.2 (2026-01-02):
+ *       - Added twin prime counter and statistics display
+ *       - Display "oasis primes" marker for the second prime in twin pairs
+ *
  * @note Modified in v1.4.1 (2026-01-01):
  *       - Fixed display order for twin primes (now shows in ascending order)
  *       - Added boundary checks to skip tests at range limits
@@ -46,6 +55,11 @@
  */
 void find_prime_oasis(mpz_t start, mpz_t end, mpz_t step)
 {
+	int twin_flag;
+	int twin_cnt = 0;
+	int try_cnt  = 0;
+	int hit_cnt  = 0;
+
 	mpz_t pit;
 	mpz_t p1;	// plus 1
 	mpz_t m1;	// minus 1
@@ -59,25 +73,33 @@ void find_prime_oasis(mpz_t start, mpz_t end, mpz_t step)
 	     mpz_cmp(pit, end) <= 0;			//      pit <= end
 	     mpz_add(pit, pit, step)) {			//      pit += step) {
 
+           twin_flag = 0;				//
 	   if (mpz_cmp(pit, start) != 0) {		//    if (pit != start) {
 	      mpz_sub_ui(m1, pit, 1);			//       m1 = pit - 1;
 	      if (mpz_cmp(m1, p1) == 0) {		//       if (m1 == p1) {
 	         ;					//          nothing to do.
 	      }						//       }
               else {					//       else  {
+		 try_cnt++;				//
 	         if (mpz_probab_prime_p(m1, 25)) {	//          prime?
-		    gmp_printf("oasis prime = %Zd\n", m1);
+		    hit_cnt++;				//
+		    gmp_printf("oasis prime  = %Zd\n", m1);
+		    twin_flag = 1;			//
 	         }
 	      }
 	   }
 
 	   if (mpz_cmp(pit, end) != 0) {		//    if (pit != end) {
 	      mpz_add_ui(p1, pit, 1);			//       p1 = pit + 1;
+	      try_cnt++;				//
 	      if (mpz_probab_prime_p(p1, 25)) {		//          prime?
-		 gmp_printf("oasis prime = %Zd\n", p1);
+		 hit_cnt++;				//
+		 gmp_printf("oasis prime%c = %Zd\n", (twin_flag)? 's':' ', p1);
+		 if (twin_flag) twin_cnt++;		//
 	      }
            }
 	}
+	printf("(try=%d, hit=%d, twin=%d)\n", try_cnt, hit_cnt, twin_cnt); 
 
 	mpz_clear(pit);
 	mpz_clear(p1);
@@ -89,7 +111,6 @@ void find_prime_oasis(mpz_t start, mpz_t end, mpz_t step)
  */
 int main()
 {
-	int ret = 0;
 	mpz_t start;
 	mpz_t end;
 	mpz_t step;
