@@ -135,20 +135,30 @@ docker run -it prime-oasis /app/build/prime_oasis
 ## Performance
 
 ```text
-oasis_layer1:
-real    0m0.756s
+oasis_layer1: (try=1402, hit=20, twin=0)
+real    0m0.824s
 user    0m0.016s
-sys     0m0.008s
+sys     0m0.013s
 
-oasis_layer2:
-real    5m34.832s
-user    0m0.061s
-sys     0m0.157s
+oasis_layer2: (try=968782, hit=16093, twin=143)
+real    5m59.044s
+user    0m0.431s
+sys     0m0.721s
 
-oasis_layer3:
-real    11m4.516s
-user    0m0.087s
-sys     0m0.284s
+oasis_layer3: (try=1928792, hit=32000, twin=282)
+real    11m54.582s
+user    0m0.962s
+sys     0m1.621s
+
+oasis_divs: lcm(1,2,3,...n) // n=2-1429
+real    0m17.802s
+user    0m0.016s
+sys     0m0.038s
+
+prime_oasis 701 683: (try=968782, hit=16093, twin=143)  // equivalent to oasis_layer2
+real    5m58.662s
+user    0m0.433s
+sys     0m0.770s
 ```
 
 *Measured on Codespace: 2-Core  
