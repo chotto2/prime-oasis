@@ -77,12 +77,16 @@ All of start, end, and step are mpz_t type variables with values in LCM(1,2,3,..
 
 ## Program Components
 
-The program consists of the following four executables:
+The program consists of the following five executables:
 
 - **oasis_layer1**: Full-spec version for Layer 1
 - **oasis_layer2**: Full-spec version for Layer 2
 - **oasis_layer3**: Minor-change version for Layer 3 (adjusted to complete in approximately 11 minutes on Codespace)
 - **oasis_divs**: Displays prime factorization information for LCM(1,2,3,...n) format sequentially from 2
+- **prime_oasis**: Generic version accepting start/end/step via command-line arguments (added in v1.5.0)
+  - Validates argument count and values, displays USAGE for invalid input
+  - Accepts 2 or 3 arguments
+  - All arguments specify n values (n in LCM(1,2,3,...n))
 
 ## Features
 
@@ -107,11 +111,25 @@ cd prime-oasis
 # Build Docker image
 docker build -t prime-oasis .
 
-# Run
+# Run each layer
 docker run -it prime-oasis /app/build/oasis_layer1
 docker run -it prime-oasis /app/build/oasis_layer2
 docker run -it prime-oasis /app/build/oasis_layer3
 docker run -it prime-oasis /app/build/oasis_divs
+
+# Run prime_oasis command
+# Usage: prime_oasis <start> [<end>] <step>
+#   - With 2 arguments: prime_oasis <start> <step> (end will be set to start*2)
+#   - With 3 arguments: prime_oasis <start> <end> <step>
+
+# Example 1: Equivalent to oasis_layer2 (start=701, end=701*2, step=683)
+docker run -it prime-oasis /app/build/prime_oasis 701 683
+
+# Example 2: Explicitly specify start/end/step
+docker run -it prime-oasis /app/build/prime_oasis 701 709 683
+
+# Example 3: Display USAGE message (with invalid arguments)
+docker run -it prime-oasis /app/build/prime_oasis
 ```
 
 ## Performance

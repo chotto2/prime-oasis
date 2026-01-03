@@ -78,12 +78,16 @@ start,end,stepはすべてmpz_t型の変数でLCM(1,2,3,...n)形式の値を指�
 
 ## プログラム構成
 
-プログラムは下記の4本で構成している。
+プログラムは下記の5本で構成している。
 
 - **oasis_layer1**: 第1層のフルスペック版
 - **oasis_layer2**: 第2層のフルスペック版
 - **oasis_layer3**: 第3層のマイナーチェンジ版（Codespaceで11分程度で終了するように調整済み）
 - **oasis_divs**: LCM(1,2,3,...n)形式の素因数分解の情報を2から順次表示
+- **prime_oasis**: コマンドライン引数でstart/end/stepを指定可能な汎用版（v1.5.0で追加）
+  - 引数の数と値をチェックし、不正な場合はUSAGEを表示
+  - 2つまたは3つの引数を受け付ける
+  - 引数は全てnの値（LCM(1,2,3,...n)のn）で指定
 
 ## 特徴
 
@@ -108,11 +112,25 @@ cd prime-oasis
 # Dockerイメージのビルド
 docker build -t prime-oasis .
 
-# 実行
+# 各レイヤーの実行
 docker run -it prime-oasis /app/build/oasis_layer1
 docker run -it prime-oasis /app/build/oasis_layer2
 docker run -it prime-oasis /app/build/oasis_layer3
 docker run -it prime-oasis /app/build/oasis_divs
+
+# prime_oasisコマンドの実行
+# 使用方法: prime_oasis <start> [<end>] <step>
+#   - 2引数の場合: prime_oasis <start> <step>（endはstart*2と同じ値になる）
+#   - 3引数の場合: prime_oasis <start> <end> <step>
+
+# 例1: oasis_layer2と同等（start=701, end=701*2, step=683）
+docker run -it prime-oasis /app/build/prime_oasis 701 683
+
+# 例2: start/end/stepを明示的に指定
+docker run -it prime-oasis /app/build/prime_oasis 701 709 683
+
+# 例3: USAGEメッセージの表示（不正な引数の場合）
+docker run -it prime-oasis /app/build/prime_oasis
 ```
 
 ## パフォーマンス
