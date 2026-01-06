@@ -22,6 +22,27 @@ LCM(1,2,3,...n) indicates the center point of a prime desert with size 2n+1.
 
 Two points: LCM(1,2,3,...n)±1
 
+### Terminology
+
+```text
+Prime Desert Structure:
+
+    ... large gap ...     p-1   p   p+1     ... large gap ...
+                           ↓    ↓    ↓
+                        [prime][?][prime]
+                           ↑         ↑
+                       oasis primes (1-2 actual primes at p±1)
+
+                        <----------->
+                        prime oasis (center point p or entire desert)
+
+Where:
+- p: Center point (typically even, p = LCM(1,2,3,...n))
+- p±1: Positions where oasis primes may exist
+- prime oasis: Center point p or the entire prime desert region(2n+1)
+- oasis primes: Actual prime numbers found at p-1 and/or p+1
+```
+
 ### Structure of Prime Deserts
 
 Here, we've prepared a prime desert with its center point at LCM(1,2,3,...701) and size 1403.
