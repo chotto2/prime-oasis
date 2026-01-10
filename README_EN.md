@@ -46,6 +46,12 @@ Where:
 ### Structure of Prime Deserts
 
 Here, we've prepared a prime desert with its center point at LCM(1,2,3,...701) and size 1403.
+
+```text
+For convenience, we denote LCM(1,2,3,...n) as dn (same hereafter).
+Example: LCM(1,2,3,...701) -> d701
+```
+
 The specific value of the center point is as follows:
 
 ```text
@@ -59,46 +65,21 @@ When this value is expressed in factorized product form, it appears as follows:
 ```
 
 Please focus on the end of this product expression.
-This shows that from origin 0 to LCM(1,2,3,...701), there are 701 prime deserts centered at multiples of LCM(1,2,3,...691).  
-Similarly, from origin 0 to LCM(1,2,3,...691), there are 691 prime deserts centered at multiples of LCM(1,2,3,...683).  
-Similarly, from origin 0 to LCM(1,2,3,...683), there are 683 prime deserts centered at multiples of LCM(1,2,3,...677).  
+This shows that from origin 0 to d701, there are 701 prime deserts centered at multiples of d691.  
+Similarly, from origin 0 to d691, there are 691 prime deserts centered at multiples of d683.  
+Similarly, from origin 0 to d683, there are 683 prime deserts centered at multiples of d677.  
 And so on...
 
 Thus, examining a single prime desert reveals that the smaller prime deserts below it form a hierarchical structure similar to matryoshka dolls.  
 While a matryoshka doll contains just one slightly smaller doll inside, a prime desert contains multiple smaller prime deserts.  
-This means that from origin 0 to LCM(1,2,3,...701), there are `701*691=484,391` prime deserts centered at multiples of LCM(1,2,3,...683).  
-Similarly, from origin 0 to LCM(1,2,3,...701), there are `701*691*683=330,839,053` prime deserts centered at multiples of LCM(1,2,3,...677).  
+This means that from origin 0 to d701, there are `701*691=484,391` prime deserts centered at multiples of d683.  
+Similarly, from origin 0 to d701, there are `701*691*683=330,839,053` prime deserts centered at multiples of d677.  
 Where center points of large and small prime deserts coincide, they form an overlapping state, with the size determined by the larger desert.
 However, in this approach, the size of prime deserts is not considered an issue at all.
 
-### Program Structure
-
-The program consists of the main() function, make_lcm() macro, and find_prime_oasis() function.
-
-The main() function specifies the search start position (start), end position (end), and granularity (step).  
-All of start, end, and step are specified as prime desert center points.
-Note that start is set to LCM(1,2,3,...701) rather than origin 0.  
-Normally, when searching for multiples of an integer n from an intermediate position m, division, multiplication, and position adjustment are required.  
-By setting start to LCM(1,2,3,...701), all multiples from 1 to 701 become equivalent to searching from origin 0, eliminating the need for position adjustment.  
-Additionally, this standardizes the bit count of output results.  
-We set end as `start*2`. This provides the same size as searching from origin 0 to LCM(1,2,3,...701), which we judged to be more intuitive.  
-For step, we introduced the concept of "layers" as follows:
-
-- **Layer 1**: LCM(1,2,3,...691)   // step for oasis_layer1 command
-- **Layer 2**: LCM(1,2,3,...683)   // step for oasis_layer2 command
-- **Layer 3**: LCM(1,2,3,...677)   // step for oasis_layer3 command
-
-Layer 1 has the coarsest granularity and is fastest, while Layer 3 has the finest granularity and is slowest.  
-All content from Layer 1 is included in Layer 2 in an overlapping form.
-
-The make_lcm(A, B) macro calculates the value of LCM(1,2,3,...B) and assigns it to mpz_t type variable A.
-
-The find_prime_oasis() function searches for oasis primes in prime deserts from start to end in step increments.  
-All of start, end, and step are mpz_t type variables with values in LCM(1,2,3,...n) format.
-
 ## Program Components
 
-The program consists of the following five executables:
+The program consists of the following six executables:
 
 - **oasis_layer1**: Full-spec version for Layer 1
 - **oasis_layer2**: Full-spec version for Layer 2
@@ -108,6 +89,24 @@ The program consists of the following five executables:
   - Validates argument count and values, displays USAGE for invalid input
   - Accepts 2 or 3 arguments
   - All arguments specify n values (n in LCM(1,2,3,...n))
+- **prime_oases**: Generic version accepting desert/num via command-line arguments (added in v1.6.0)
+
+### Program Evolution
+
+- **Layer 1-3**: Fixed parameter versions (for demonstration)
+  - start/end/step are fixed
+  - No user modification allowed
+
+- **prime_oasis**: First-generation generic version (v1.5.0)
+  - Accepts start/end/step via command-line arguments
+  - All parameters specified in LCM(1,2,3,...n) format
+  - Limitation: Cannot specify `end=start*2`, affecting usability
+
+- **prime_oases**: Second-generation generic version (v1.6.0)
+  - Intuitive specification using desert and count (num)
+  - Supports concise notation like `d701`
+  - Eliminates special handling at start/end boundaries, simplifying logic
+  - Adds command and parameters to statistics output
 
 ## Features
 
@@ -151,6 +150,23 @@ docker run -it prime-oasis /app/build/prime_oasis 701 709 683
 
 # Example 3: Display USAGE message (with invalid arguments)
 docker run -it prime-oasis /app/build/prime_oasis
+
+# prime_oases command execution
+# Usage: prime_oases <desert> <num>
+#   desert: Specify prime desert in d<number> format (e.g., d701, d683, d677)
+#   num: Number of positions to check
+
+# Example 1: Check 701 instances of d691
+docker run -it prime-oasis /app/build/prime_oases d691 701
+
+# Example 2: Check 100 instances of d683
+docker run -it prime-oasis /app/build/prime_oases d683 100
+
+# Example 3: Check 50 instances of d701
+docker run -it prime-oasis /app/build/prime_oases d701 50
+
+# Example 4: Display USAGE message (with invalid arguments)
+docker run -it prime-oasis /app/build/prime_oases
 ```
 
 ## Performance
@@ -185,7 +201,9 @@ sys     0m0.770s
 *Measured on Codespace: 2-Core  
 *Without output redirection
 
-## Output Example
+## Output Example 1
+
+Output from `oasis_layer2`:
 
 ```text
 Prime Oasis Layer 2 - Press 'q', ESC, or Ctrl+C to interrupt
@@ -202,7 +220,7 @@ oasis prime  = 52533365733862139822107310094670675407575194265812029075214113586
 (try=968782, hit=16093, twin=143)
 ```
 
-The first line indicates that oasis_layer2 is running and the process can be interrupted by pressing 'q', ESC, or Ctrl+C.
+The first line indicates that `oasis_layer2` is running and the process can be interrupted by pressing 'q', ESC, or Ctrl+C.
 
 Following the separator line, discovered oasis primes are displayed.
 
@@ -216,6 +234,37 @@ The last line displays statistical information in parentheses.
 "try" indicates the number of times primality was tested.  
 "hit" indicates the number of primes found.  
 "twin" indicates the number of twin prime pairs found.
+
+## Output Example 2
+
+Output from `prime_oases`:
+
+```text
+Prime Oases - Press 'q', ESC, or Ctrl+C to interrupt
+====================================================
+
+d691*2+1 = 7494207710678202742482145019043344286814104014640549255281828989845788092832402694322566436458066878553584516946987337080578007578061077548557037034670319272314439375042075232075811597125634648482852732863703771511160620748834664011327566156824384949088035377748757274525293690698643482417792067231360001
+d691*46-1 = 172366777345598663077089335437996918596724392336732632871482066766453126135145261969419028038535538206732443889780708752853294174295404783616811851797417343263232105625967730337743666733889596915105612855865186744756694277223197272260534021606960853829024813688221417314081754886068800095609217546321279999
+...
+d691*658-1 = 2465594336813128702276625711265260270361840220816740704987721737659264282541860486432124357594704003044129306075558833899510164493182094513475265184406535040591450554388842751352942015454333799350858549112158540827171844226366604459726769265595222648249963639279341143318821624239853705715453590119117439999
+d691*659-1 = 2469341440668467803647866783774781942505247272824060979615362652154187176588276687779285640812933036483406098334032327568050453496971125052249543702923870200227607774076363788968979921252896616675099975478590392712927424536741021791732433048673634840724507656968215521956084271085203027456662486152733119999
+{ prime_oases d691 701: try=1402, hit=27(1.9%) }
+```
+
+The first line indicates that prime_oases is running and the process can be interrupted by pressing 'q', ESC, or Ctrl+C.
+
+Following the separator line, discovered oasis primes are displayed.
+
+`d691*2+1 = 7494...` indicates "the 2nd instance of d691 desert has an oasis prime at center+1, which is 7494..."
+`d691*46-1 = 1723...` indicates "the 46th instance of d691 desert has an oasis prime at center-1, which is 1723..."
+`d691*658-1 = 2465...` indicates "the 658th instance of d691 desert has an oasis prime at center-1, which is 2465..."
+`d691*659-1 = 2469...` indicates "the 659th instance of d691 desert has an oasis prime at center-1, which is 2469..."
+
+The last line displays statistical information in curly braces.
+`prime_oases d691 701` shows the command and parameters executed.
+"try" indicates the number of times primality was tested.
+"hit" indicates the number of primes found.
+(1.9%) shows the hit rate calculated as `hit/try*100.0`.
 
 ## Technical Details
 
