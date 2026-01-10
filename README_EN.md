@@ -173,29 +173,34 @@ docker run -it prime-oasis /app/build/prime_oases
 
 ```text
 oasis_layer1: (try=1402, hit=20, twin=0)
-real    0m0.824s
-user    0m0.016s
-sys     0m0.013s
+real    0m0.798s
+user    0m0.011s
+sys     0m0.017s
 
 oasis_layer2: (try=968782, hit=16093, twin=143)
-real    5m59.044s
-user    0m0.431s
-sys     0m0.721s
+real    5m56.133s
+user    0m0.252s
+sys     0m0.619s
 
 oasis_layer3: (try=1928792, hit=32000, twin=282)
-real    11m54.582s
-user    0m0.962s
-sys     0m1.621s
+real    11m46.195s
+user    0m0.491s
+sys     0m1.185s
 
 oasis_divs: lcm(1,2,3,...n) // n=2-1429
-real    0m17.802s
-user    0m0.016s
-sys     0m0.038s
+real    0m7.772s
+user    0m0.019s
+sys     0m0.034s
 
 prime_oasis 701 683: (try=968782, hit=16093, twin=143)  // equivalent to oasis_layer2
-real    5m58.662s
-user    0m0.433s
-sys     0m0.770s
+real    5m55.283s
+user    0m0.318s
+sys     0m0.619s
+
+prime_oases d683 484391: (try=968782, hit=16331)       // 701*691=484391(zero origin)
+real    5m56.605s
+user    0m0.349s
+sys     0m0.662s
 ```
 
 *Measured on Codespace: 2-Core  
