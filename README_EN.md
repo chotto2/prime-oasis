@@ -89,7 +89,7 @@ The program consists of the following six executables:
   - Validates argument count and values, displays USAGE for invalid input
   - Accepts 2 or 3 arguments
   - All arguments specify n values (n in LCM(1,2,3,...n))
-- **prime_oases**: Generic version accepting desert/num via command-line arguments (added in v1.6.0)
+- **prime_oases**: Generic version accepting desert/no/num via command-line arguments (added in v1.6.0)
 
 ### Program Evolution
 
@@ -107,6 +107,7 @@ The program consists of the following six executables:
   - Supports concise notation like `d701`
   - Eliminates special handling at start/end boundaries, simplifying logic
   - Adds command and parameters to statistics output
+  - Adds a feature to search from the middle (v1.6.1)
 
 ## Features
 
@@ -152,20 +153,32 @@ docker run -it prime-oasis /app/build/prime_oasis 701 709 683
 docker run -it prime-oasis /app/build/prime_oasis
 
 # prime_oases command execution
-# Usage: prime_oases <desert> <num>
-#   desert: Specify prime desert in d<number> format (e.g., d701, d683, d677)
-#   num: Number of positions to check
+# Usage: prime_oases d<n> [x<no>] [<num>]
+#  - With 1 argument : prime_oases d<n>                 // with defaults 'x1 1'
+#  - With 2 arguments: prime_oases d<n> <num>           // with default  'x1'
+#                    : prime_oases d<n> x<no>           // with default  '1'
+#  - With 3 arguments: prime_oases d<n> x<no> <num>     // without default
+#
+#   d<n> : Specify a desert in d<number> format (e.g., d701, d683, d677)
+#   x<no>: Starting position to search in d<n>*x<no> format (e.g., x701)
+#   <num>: Number of deserts to search
 
-# Example 1: Check 701 instances of d691
+# Example 1: Check 701 instances of d691*1
 docker run -it prime-oasis /app/build/prime_oases d691 701
 
-# Example 2: Check 100 instances of d683
+# Example 2: Check 701 instances of d691*701
+docker run -it prime-oasis /app/build/prime_oases d691 x701 701         // same as oasis_layer1
+
+# Example 3: Check 484391 instances of d683*484391                      // 484391 = 701 * 691
+docker run -it prime-oasis /app/build/prime_oases d683 x484391 484391   // same as oasis_layer2
+
+# Example 4: Check 100 instances of d683*1
 docker run -it prime-oasis /app/build/prime_oases d683 100
 
-# Example 3: Check 50 instances of d701
+# Example 5: Check 50 instances of d701*1
 docker run -it prime-oasis /app/build/prime_oases d701 50
 
-# Example 4: Display USAGE message (with invalid arguments)
+# Example 6: Display USAGE message (with invalid arguments)
 docker run -it prime-oasis /app/build/prime_oases
 ```
 
@@ -173,34 +186,34 @@ docker run -it prime-oasis /app/build/prime_oases
 
 ```text
 oasis_layer1: (try=1402, hit=20, twin=0)
-real    0m0.798s
-user    0m0.011s
-sys     0m0.017s
+real    0m0.933s
+user    0m0.016s
+sys     0m0.012s
 
 oasis_layer2: (try=968782, hit=16093, twin=143)
-real    5m56.133s
-user    0m0.252s
+real    5m54.973s
+user    0m0.217s
 sys     0m0.619s
 
 oasis_layer3: (try=1928792, hit=32000, twin=282)
-real    11m46.195s
-user    0m0.491s
-sys     0m1.185s
+real    11m45.549s
+user    0m0.488s
+sys     0m1.140s
 
 oasis_divs: lcm(1,2,3,...n) // n=2-1429
-real    0m7.772s
-user    0m0.019s
-sys     0m0.034s
+real    0m7.564s
+user    0m0.017s
+sys     0m0.037s
 
-prime_oasis 701 683: (try=968782, hit=16093, twin=143)  // equivalent to oasis_layer2
-real    5m55.283s
-user    0m0.318s
-sys     0m0.619s
+prime_oasis 701 683: (try=968782, hit=16093, twin=143)   // same as oasis_layer2
+real    5m54.112s
+user    0m0.222s
+sys     0m0.605s
 
-prime_oases d683 484391: (try=968782, hit=16331)       // 701*691=484391(zero origin)
-real    5m56.605s
-user    0m0.349s
-sys     0m0.662s
+prime_oases d683 x484391 484391: (try=968782, hit=16093) // same as oasis_layer2
+real    5m54.098s
+user    0m0.215s
+sys     0m0.606s
 ```
 
 *Measured on Codespace: 2-Core  
@@ -248,28 +261,28 @@ Output from `prime_oases`:
 Prime Oases - Press 'q', ESC, or Ctrl+C to interrupt
 ====================================================
 
-d691*2+1 = 7494207710678202742482145019043344286814104014640549255281828989845788092832402694322566436458066878553584516946987337080578007578061077548557037034670319272314439375042075232075811597125634648482852732863703771511160620748834664011327566156824384949088035377748757274525293690698643482417792067231360001
-d691*46-1 = 172366777345598663077089335437996918596724392336732632871482066766453126135145261969419028038535538206732443889780708752853294174295404783616811851797417343263232105625967730337743666733889596915105612855865186744756694277223197272260534021606960853829024813688221417314081754886068800095609217546321279999
+d683*484456+1 = 2627072279800520541108487733245775976709705914990377662819691566645970417005220318148142724703856185033686932519587335291395440838811257152578688808732448765114590478925747900600954691097754312058906587230259388083365289208029989861267516201208765727131254172910746710700018581925544158406797303706682880001
+d683*484473-1 = 2627164466147178666612555892772059433187908403968850086363352775830360705281326071292718327908935625798473771113500576090766186009671479322128851956076580020850935880857278808906993250285273223628388648370967552312103125481946581894037554239287395260086488975082542462417577865567180827682630228789999039999
 ...
-d691*658-1 = 2465594336813128702276625711265260270361840220816740704987721737659264282541860486432124357594704003044129306075558833899510164493182094513475265184406535040591450554388842751352942015454333799350858549112158540827171844226366604459726769265595222648249963639279341143318821624239853705715453590119117439999
-d691*659-1 = 2469341440668467803647866783774781942505247272824060979615362652154187176588276687779285640812933036483406098334032327568050453496971125052249543702923870200227607774076363788968979921252896616675099975478590392712927424536741021791732433048673634840724507656968215521956084271085203027456662486152733119999
-{ prime_oases d691 701: try=1402, hit=27(1.9%) }
+d683*968761-1 = 5253325727933665967445546520111034192936554427877853210633921804654121214616795417188584503292006749156620181057945296423674262807040540916800046132231731670453407093636133027424743356471075939000648984328346258605588620924212603431459988652424998543895422750060248803202892938563609666187078625790969279999
+d683*968763-1 = 5253336573386213982210731009467067540757519426581202907521411358675814189708101976382063986022016095128948044421935089458894350474200567054394182973095747112304741846804548428401924363434313458008823344462547219103087189897614555435315287245140131430125450373845165950463782266050861039043058969918418239999
+{ prime_oases d683 x484391 484391: try=968782, hit=16093(1.7%) }
 ```
 
-The first line indicates that prime_oases is running and the process can be interrupted by pressing 'q', ESC, or Ctrl+C.
+The first line indicates that `prime_oases` is running and the process can be interrupted by pressing 'q', ESC, or Ctrl+C.
 
 Following the separator line, discovered oasis primes are displayed.
 
-`d691*2+1 = 7494...` indicates "the 2nd instance of d691 desert has an oasis prime at center+1, which is 7494..."
-`d691*46-1 = 1723...` indicates "the 46th instance of d691 desert has an oasis prime at center-1, which is 1723..."
-`d691*658-1 = 2465...` indicates "the 658th instance of d691 desert has an oasis prime at center-1, which is 2465..."
-`d691*659-1 = 2469...` indicates "the 659th instance of d691 desert has an oasis prime at center-1, which is 2469..."
+`d683*484456+1 = 262707...` indicates "the 484456th instance of d683 desert has an oasis prime at center+1, which is 262707..."  
+`d683*484473-1 = 262716...` indicates "the 484473th instance of d683 desert has an oasis prime at center-1, which is 262716..."  
+`d683*968761-1 = 525332...` indicates "the 968761th instance of d683 desert has an oasis prime at center-1, which is 525332..."  
+`d683*968763-1 = 525333...` indicates "the 968763th instance of d683 desert has an oasis prime at center-1, which is 525333..."  
 
 The last line displays statistical information in curly braces.
-`prime_oases d691 701` shows the command and parameters executed.
+`prime_oases d683 x484391 484391` shows the command and parameters executed.
 "try" indicates the number of times primality was tested.
 "hit" indicates the number of primes found.
-(1.9%) shows the hit rate calculated as `hit/try*100.0`.
+(1.7%) shows the hit rate calculated as `hit/try*100.0`.
 
 ## Technical Details
 
