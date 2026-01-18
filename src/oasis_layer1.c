@@ -27,6 +27,12 @@
 #include <stdlib.h>
 #include <gmp.h>
 
+#define XPT_ON
+#include "xpt.h"
+int xpt_flg = 0;
+
+#define VERSION "v1.6.1"
+
 #define make_lcm(A, B) {		\
 	mpz_set_ui(A, 1);		\
 	for (int i = 2; i <= B; i++) {	\
@@ -118,6 +124,9 @@ int main()
 	mpz_init(start);
 	mpz_init(end);
 	mpz_init(step);
+
+	XPT_INIT();
+	XPT_VER(VERSION);
 
 	make_lcm(start, 701);				// start = lcm(1,2,3,..,701), around 2^1024
 	mpz_mul_ui(end, start, 2);		        // end   = start*2;

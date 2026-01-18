@@ -21,7 +21,8 @@ RUN cp build/oasis_layer1 /usr/local/bin/ && \
     cp build/oasis_layer3 /usr/local/bin/ && \
     cp build/oasis_divs   /usr/local/bin/ && \
     cp build/prime_oasis  /usr/local/bin/ && \
-    cp build/prime_oases  /usr/local/bin/
+    cp build/prime_oases  /usr/local/bin/ && \
+    cp build/test_runner  /usr/local/bin/
 
 
 CMD {"/bin/bash"}

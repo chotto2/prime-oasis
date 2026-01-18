@@ -13,6 +13,12 @@
 #include <stdlib.h>
 #include <gmp.h>
 
+#define XPT_ON
+#include "xpt.h"
+int xpt_flg = 0;
+
+#define VERSION "v1.6.1"
+
 #define N_MAX (2000)
 #define M_MAX (2000)
 #define S_MIN (2)	// LCM(1, 2)=2
@@ -104,6 +110,9 @@ int make_lcm_list()
 int main()
 {
 	int ret;
+
+	XPT_INIT();
+	XPT_VER(VERSION);
 
 	do_sieve();
 	ret = make_lcm_list();

@@ -16,3 +16,7 @@ target_link_libraries(oasis_divs   gmp m)
 target_link_libraries(prime_oasis  gmp m)
 target_link_libraries(prime_oases  gmp m)
 
+add_executable(test_runner tests/test_runner.c)
+target_include_directories(test_runner PRIVATE src)
+target_link_libraries(test_runner m)
+install(TARGETS test_runner DESTINATION bin)
