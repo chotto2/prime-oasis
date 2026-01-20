@@ -79,7 +79,7 @@ However, in this approach, the size of prime deserts is not considered an issue 
 
 ## Program Components
 
-The program consists of the following six executables:
+The program consists of the following seven executables:
 
 - **oasis_layer1**: Full-spec version for Layer 1
 - **oasis_layer2**: Full-spec version for Layer 2
@@ -90,6 +90,7 @@ The program consists of the following six executables:
   - Accepts 2 or 3 arguments
   - All arguments specify n values (n in LCM(1,2,3,...n))
 - **prime_oases**: Generic version accepting desert/no/num via command-line arguments (added in v1.6.0)
+- **test_runner**: Integration test program (added in v1.7.0)
 
 ### Program Evolution
 
@@ -108,6 +109,13 @@ The program consists of the following six executables:
   - Eliminates special handling at start/end boundaries, simplifying logic
   - Adds command and parameters to statistics output
   - Adds a feature to search from the middle (v1.6.1)
+
+- **test_runner**: Integration test program (v1.7.0)
+  - Tests output from the above six commands
+  - For multi-line outputs, tests the first, middle, and last lines
+  - For commands that output statistics, tests including statistical content
+  - For commands with arguments, sets arguments to produce identical results
+  - Does not modify tested commands (no self-diagnostic features added)
 
 ## Features
 
@@ -180,6 +188,9 @@ docker run -it prime-oasis /app/build/prime_oases d701 50
 
 # Example 6: Display USAGE message (with invalid arguments)
 docker run -it prime-oasis /app/build/prime_oases
+
+# Run integration test
+docker run -it prime-oasis /app/build/test_runner
 ```
 
 ## Performance
@@ -214,6 +225,11 @@ prime_oases d683 x484391 484391: (try=968782, hit=16093) // same as oasis_layer2
 real    5m54.098s
 user    0m0.215s
 sys     0m0.606s
+
+test_runner: oasis_layer1/2/3, oasis_divs, prime_oasis, prime_oases
+real    27m22.726s
+user    0m0.063s
+sys     0m0.015s
 ```
 
 *Measured on Codespace: 2-Core  
@@ -283,6 +299,36 @@ The last line displays statistical information in curly braces.
 "try" indicates the number of times primality was tested.
 "hit" indicates the number of primes found.
 (1.7%) shows the hit rate calculated as `hit/try*100.0`.
+
+## Output Example 3
+
+Output from `test_runner`:
+
+```text
+====< 0001 oasis_layer1:top-mid-bot-sta
+====< 0002 oasis_layer2:top-mid-bot-sta
+====< 0003 oasis_layer3:top-mid-bot-sta
+====< 0004 oasis_divs:top-mid-bot
+====< 0005 prime_oasis:top-mid-bot-sta
+====< 0006 prime_oases:top-mid-bot-sta
+```
+
+Lines starting with '====< ' are title lines displayed for each test.  
+The following strings have these meanings:  
+The leading number indicates the test number.  
+Next, the name of the command being tested.  
+Next, the test content.  
+"top" indicates testing the first line of multiple results.  
+"mid" indicates testing the middle line of multiple results.  
+"bot" indicates testing the last line of multiple results.  
+"sta" indicates testing statistical information.
+
+If there are no errors, only title lines are displayed.
+
+When an error occurs, the causal information is displayed and the integration test is interrupted.
+
+test_runner takes approximately 30 minutes, so run it when you have time.  
+You can interrupt with a key press ('q', ESC, or Ctrl+C).
 
 ## Technical Details
 
