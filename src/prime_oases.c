@@ -55,8 +55,6 @@
 #include "xpt.h"
 int xpt_flg = 0;
 
-#define VERSION "v1.6.1"
-
 #define ERR_OK		(0)
 #define ERR_PNUM	(-1)
 #define ERR_NOND	(-2)
@@ -557,7 +555,6 @@ int main(int argc, char *argv[])
 	atexit(disable_raw_mode); // Restore terminal on exit
 
 	XPT_INIT();
-	XPT_VER(VERSION);
 
 	printf("Prime Oases - Press 'q', ESC, or Ctrl+C to interrupt\n");
 	printf("====================================================\n\n");

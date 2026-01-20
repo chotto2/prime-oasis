@@ -36,8 +36,6 @@
 #include "xpt.h"
 int xpt_flg = 0;
 
-#define VERSION "v1.6.1"
-
 #define make_lcm(A, B) {		\
 	mpz_set_ui(A, 1);		\
 	for (int i = 2; i <= B; i++) {	\
@@ -221,7 +219,6 @@ int main()
 	atexit(disable_raw_mode); // Automatically restore on exit
 
 	XPT_INIT();
-	XPT_VER(VERSION);
 
 	printf("Prime Oasis Layer 3 - Press 'q', ESC, or Ctrl+C to interrupt\n");
 	printf("=============================================================\n\n");
