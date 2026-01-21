@@ -77,6 +77,8 @@ Similarly, from origin 0 to d701, there are `701*691*683=330,839,053` prime dese
 Where center points of large and small prime deserts coincide, they form an overlapping state, with the size determined by the larger desert.
 However, in this approach, the size of prime deserts is not considered an issue at all.
 
+> **Note:** In the calculation of the minimum common multiple, there are cases where the prime factors of the intermediate factors change, resulting in a change in the value. For this reason, the number of db deserts in a da desert should be obtained as da/db.
+
 ## Program Components
 
 The program consists of the following seven executables:
