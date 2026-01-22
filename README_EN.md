@@ -16,7 +16,9 @@ We've made this experience tangible, so please give it a try.
 ## Location and Size of Prime Deserts
 
 LCM(1,2,3,...n) indicates the center point of a prime desert with size 2n+1.  
-*Note: LCM() denotes the least common multiple (same hereafter).*
+The same prime deserts continue infinitely at positions that are multiples of LCM(1, 2, 3, ...n).  
+> **Note:** LCM() denotes the least common multiple (same hereafter).  
+> The least common multiple tends not to change until the next prime number appears, so its size is often slightly larger.
 
 ### Positions for Prime Testing
 
