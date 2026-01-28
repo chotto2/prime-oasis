@@ -38,3 +38,11 @@ jobs:
           chotto2/prime-oasis:${{ steps.meta.outputs.version }}
           chotto2/prime-oasis:latest
 
+    - name: Update Docker Hub Description
+      uses: peter-evans/dockerhub-description@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+        repository: chotto2/prime-oasis
+        readme-filepath: ./README.md 
+
